@@ -3,7 +3,7 @@
 #include "../common.hpp"
 
 #define DRIVER_NAME "WriteMemoryDriver"
-#define DRIVER_PATH "WriteMemoryDriver.sys"
+#define DRIVER_FILE_NAME "WriteMemoryDriver.sys"
 
 namespace PassThrough
 {
@@ -35,7 +35,17 @@ namespace PassThrough
 
 		bool load()
 		{
-			NTSTATUS status = driver::load(DRIVER_PATH, DRIVER_NAME);
+			char path[MAX_PATH]{};
+			GetModuleFileNameA(nullptr, path, MAX_PATH);
+			char* last_slash = strrchr(path, '\\');
+			if (!last_slash)
+				return false;
+			*last_slash = '\0';
+
+			std::string driver_path = path;
+			driver_path += "\\" DRIVER_FILE_NAME;
+
+			NTSTATUS status = driver::load(driver_path, DRIVER_NAME);
 			if (status == STATUS_IMAGE_ALREADY_LOADED)
 			{
 				unload();

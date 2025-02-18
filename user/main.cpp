@@ -144,7 +144,7 @@ int main(int, char**)
 	WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"passthrough", nullptr };
 	RegisterClassExW(&wc);
 	HWND hwnd = CreateWindowExW(
-		WS_EX_TOPMOST|WS_EX_TRANSPARENT,
+		WS_EX_TOPMOST/* | WS_EX_TRANSPARENT*/,
 		wc.lpszClassName,
 		L"passthrough",
 		WS_POPUP,
